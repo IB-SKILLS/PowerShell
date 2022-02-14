@@ -2,4 +2,4 @@ PowerShell Scripts
 ==================
 | Script                                               | Description                                                        |
 | ---------------------------------------------------- | ------------------------------------------------------------------ |
-|            | Lists the installed text-to-speech voices                          |
+| [list-voices.ps1](Scripts/list-voices.ps1)           | Lists the installed text-to-speech voices                          |
