@@ -1,15 +1,19 @@
 Import-Module ActiveDirectory
 
+# Переменные DC
+$dc_first = "demo"
+$dc_second = "lab"
+
 # Переменные OU
 $ou_main = "DemoOffice"
 $ou_users = "Users"
 $ou_computers = "Computers"
 
 # Переменные PATH
-$dc_path = "DC=demo,DC=lab"
-$main_path = "OU=DemoOffice,DC=demo,DC=lab"
-$users_path = "OU=Users,OU=DemoOffice,DC=demo,DC=lab"
-$computers_path = "OU=Computers,OU=DemoOffice,DC=demo,DC=lab"
+$dc_path = "DC=$dc_first,DC=$dc_second"
+$main_path = "OU=$ou_main,DC=$dc_first,DC=$dc_second"
+$users_path = "OU=$ou_users,OU=$ou_main,DC=$dc_first,DC=$dc_second"
+$computers_path = "OU=$ou_computers,OU=$ou_main,DC=$dc_first,DC=$dc_second"
 
 # Cоздаем OU
 New-ADOrganizationalUnit -Name "$ou_main" -Path $dc_path
