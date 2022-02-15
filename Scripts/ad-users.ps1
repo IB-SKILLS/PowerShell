@@ -1,9 +1,20 @@
 Import-Module ActiveDirectory
 
+# Переменные OU
+$ou_main = "DemoOffice"
+$ou_users = "Users"
+$ou_computers = "Computers"
+
+# Переменные PATH
+$dc_path = "DC=demo,DC=lab"
+$main_path = "OU=DemoOffice,DC=demo,DC=lab"
+$users_path = "OU=Users,OU=DemoOffice,DC=demo,DC=lab"
+$computers_path = "OU=Computers,OU=DemoOffice,DC=demo,DC=lab"
+
 # Cоздаем OU
-New-ADOrganizationalUnit -Name "DemoOffice" -Path “DC=demo,DC=lab”
-New-ADOrganizationalUnit -Name "Users" -Path “OU=DemoOffice,DC=demo,DC=lab”
-New-ADOrganizationalUnit -Name "Computers" -Path “OU=DemoOffice,DC=demo,DC=lab”
+New-ADOrganizationalUnit -Name "$ou_main" -Path $dc_path
+New-ADOrganizationalUnit -Name "$ou_users" -Path $main_path
+New-ADOrganizationalUnit -Name "$ou_computers" -Path $main_path
 
 $number = Read-Host "Введите количество пользователей"
 $count=1..$number
@@ -24,7 +35,7 @@ $Username = @{
 Name = "$user"
 GivenName = "$user"
 UserPrincipalName = "$user@demo.lab"
-Path = "OU=Users,OU=DemoOffice,DC=demo,DC=lab"
+Path = $users_path
 ChangePasswordAtLogon = $true
 AccountPassword = "$pass" | ConvertTo-SecureString -AsPlainText -Force
 Enabled = $true
@@ -36,3 +47,4 @@ Set-ADUser $user -PasswordNeverExpires:$True
 if ($users.$user -eq "y")
 {Add-ADGroupMember "Domain admins" $user}
 }
+
