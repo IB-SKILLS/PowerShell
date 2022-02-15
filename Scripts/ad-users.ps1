@@ -47,4 +47,3 @@ Set-ADUser $user -PasswordNeverExpires:$True
 if ($users.$user -eq "y")
 {Add-ADGroupMember "Domain admins" $user}
 }
-
