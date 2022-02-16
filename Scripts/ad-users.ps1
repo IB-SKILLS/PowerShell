@@ -40,7 +40,6 @@ $pass = Read-Host 'Enter the password'
 # Цикл с пользователями
 foreach ($user in $users.keys) {
 $Username = @{
-
 Name = "$user"
 GivenName = "$user"
 UserPrincipalName = "$user@demo.lab"
@@ -48,7 +47,6 @@ Path = $users_path
 ChangePasswordAtLogon = $true
 AccountPassword = "$pass" | ConvertTo-SecureString -AsPlainText -Force
 Enabled = $true
-
 }
 
 # Создание пользователей
