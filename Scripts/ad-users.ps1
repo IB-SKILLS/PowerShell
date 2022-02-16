@@ -40,6 +40,7 @@ $pass = Read-Host 'Enter the password'
 # Цикл с пользователями
 foreach ($user in $users.keys) {
 $Username = @{
+
 Name = "$user"
 GivenName = "$user"
 UserPrincipalName = "$user@demo.lab"
@@ -47,6 +48,7 @@ Path = $users_path
 ChangePasswordAtLogon = $true
 AccountPassword = "$pass" | ConvertTo-SecureString -AsPlainText -Force
 Enabled = $true
+
 }
 
 # Создание пользователей
@@ -55,13 +57,12 @@ Set-ADUser $user -PasswordNeverExpires:$True
 if ($users.$user -eq "y")
 {Add-ADGroupMember "Domain admins" $user}
 
-# Создание локального скрипта для компьютеров
-$spass = '$pass' + " | ConvertTo-SecureString -AsPlainText -Force"
-$credential = "New-Object System.Management.Automation.PSCredential -ArgumentList" + ' $user, $spass'
+$securepassword = '$pass' + " | ConvertTo-SecureString -AsPlainText -Force"
+$credential = "New-Object System.Management.Automation.PSCredential -ArgumentList" + ' $user, $securepassword'
 
 $out = '$user = "' + "$user" + '"
 ' + '$pass = "' + "$pass" + '"
-' + '$spass = ' + "$spass
+' + '$securepassword = ' + "$securepassword
 " + '$credential = ' + "$credential
 Add-Computer -DomainName $dc_first.$dc_second -NewName $user -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential'
 
