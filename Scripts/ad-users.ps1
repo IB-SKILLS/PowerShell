@@ -1,5 +1,8 @@
 Import-Module ActiveDirectory
 
+# Указываем директории
+$dir = "C:\out"
+
 # Переменные DC
 $dc_first = "demo"
 $dc_second = "lab"
@@ -50,4 +53,18 @@ New-ADUser @Username
 Set-ADUser $user -PasswordNeverExpires:$True
 if ($users.$user -eq "y")
 {Add-ADGroupMember "Domain admins" $user}
+
+$spass = '$pass' + " | ConvertTo-SecureString -AsPlainText -Force"
+$credential = "New-Object System.Management.Automation.PSCredential -ArgumentList" + ' $user, $spass'
+
+$out = '$user = "' + "$user" + '"
+' + '$pass = "' + "$pass" + '"
+' + '$spass = ' + "$spass
+" + '$credential = ' + "$credential
+Add-Computer -DomainName demo.lab -NewName $user -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential'
+
 }
+
+# Запись в директорию
+new-item -path "$dir" -ItemType Directory -force
+write-output $out | out-file -append -encoding utf8 "$dir\out.ps1"
