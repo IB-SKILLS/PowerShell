@@ -8,7 +8,7 @@ $Password = 'xxXX1234'
 $ldap_path = 'OU=Computers,OU=DemoOffice,DC=demo,DC=lab'
 
 # Настройка -credential
-[SecureString]$Securepassword = $Password | ConvertTo-SecureString -AsPlainText -Force 
+$Securepassword = $Password | ConvertTo-SecureString -AsPlainText -Force 
 $credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username, $Securepassword
 
 # Добавляем пользователя в домен и перезагружаем комьютер
