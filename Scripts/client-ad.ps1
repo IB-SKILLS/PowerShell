@@ -7,7 +7,7 @@ $Username = 'user-agent'
 $Password = 'xxXX1234'
 $ldap_path = 'OU=Computers,OU=DemoOffice,DC=demo,DC=lab'
 
-# Настройка -credential
+# Настройка
 $Securepassword = $Password | ConvertTo-SecureString -AsPlainText -Force 
 $credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username, $Securepassword
 
