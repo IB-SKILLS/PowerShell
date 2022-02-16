@@ -1,5 +1,9 @@
 Import-Module ActiveDirectory
 
+# Указываем директорию
+$dir = "C:\out"
+new-item -path "$dir" -ItemType Directory -force
+
 # Переменные DC
 $dc_first = "demo"
 $dc_second = "lab"
@@ -62,9 +66,6 @@ $out = '$user = "' + "$user" + '"
 " + '$credential = ' + "$credential
 Add-Computer -DomainName $dc_first.$dc_second -NewName $user -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential'
 
-}
-
 # Указываем директорию и записываем данные пользователя
-$dir = "C:\out"
-new-item -path "$dir" -ItemType Directory -force
-write-output $out | out-file -append -encoding utf8 "$dir\out.ps1"
+write-output $out | out-file -append -encoding utf8 "$dir\$user.ps1"
+}
