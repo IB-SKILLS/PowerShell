@@ -1,8 +1,5 @@
 Import-Module ActiveDirectory
 
-# Указываем директории
-$dir = "C:\out"
-
 # Переменные DC
 $dc_first = "demo"
 $dc_second = "lab"
@@ -23,6 +20,7 @@ New-ADOrganizationalUnit -Name "$ou_main" -Path $dc_path
 New-ADOrganizationalUnit -Name "$ou_users" -Path $main_path
 New-ADOrganizationalUnit -Name "$ou_computers" -Path $main_path
 
+# Вводим переменные
 $number = Read-Host "Введите количество пользователей"
 $count=1..$number
 $users = @{}
@@ -49,6 +47,7 @@ Enabled = $true
 
 }
 
+# Создание пользователей
 New-ADUser @Username
 Set-ADUser $user -PasswordNeverExpires:$True
 if ($users.$user -eq "y")
@@ -65,6 +64,7 @@ Add-Computer -DomainName demo.lab -NewName $user -OUPath " + '"' + "$computers_p
 
 }
 
-# Запись в директорию
+# Указываем директорию и записываем данные пользователя
+$dir = "C:\out"
 new-item -path "$dir" -ItemType Directory -force
 write-output $out | out-file -append -encoding utf8 "$dir\out.ps1"
