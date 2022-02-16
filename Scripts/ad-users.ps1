@@ -60,7 +60,7 @@ $out = '$user = "' + "$user" + '"
 ' + '$pass = "' + "$pass" + '"
 ' + '$spass = ' + "$spass
 " + '$credential = ' + "$credential
-Add-Computer -DomainName demo.lab -NewName $user -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential'
+Add-Computer -DomainName $dc_first.$dc_second -NewName $user -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential'
 
 }
 
