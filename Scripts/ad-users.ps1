@@ -55,6 +55,7 @@ Set-ADUser $user -PasswordNeverExpires:$True
 if ($users.$user -eq "y")
 {Add-ADGroupMember "Domain admins" $user}
 
+# Создание локального скрипта для компьютеров
 $spass = '$pass' + " | ConvertTo-SecureString -AsPlainText -Force"
 $credential = "New-Object System.Management.Automation.PSCredential -ArgumentList" + ' $user, $spass'
 
