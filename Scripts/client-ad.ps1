@@ -18,7 +18,7 @@ Restart-Computer -Force
 # Проверка
 try
 {
-Get-ADOrganizationalUnit -SearchBase "$main_path" -Filter *
+Get-ADOrganizationalUnit -SearchBase "$main_path" -Filter * >$null
 }
 # Создание
 catch
