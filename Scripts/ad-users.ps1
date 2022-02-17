@@ -63,7 +63,8 @@ $out = '$user = "' + "$user" + '"
 ' + '$pass = "' + "$pass" + '"
 ' + '$securepassword = ' + "$securepassword
 " + '$credential = ' + "$credential
-Add-Computer -DomainName $dc_first.$dc_second -NewName $user -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential'
+Add-Computer -DomainName $dc_first.$dc_second -NewName $user -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential
+Restart-Computer -Force'
 
 # Указываем директорию и записываем данные пользователя
 write-output $out | out-file -append -encoding utf8 "$dir\$user.ps1"
