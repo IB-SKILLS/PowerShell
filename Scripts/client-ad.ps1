@@ -18,13 +18,10 @@ Restart-Computer -Force
 # Проверка
 try
 {
-$err="false"
 Get-ADOrganizationalUnit -SearchBase "$main_path" -Filter *
 }
+# Создание
 catch
 {
-$err="true"
-}
-if ($err -ne "false"){
 New-ADOrganizationalUnit -Name "$ou_main" -Path $dc_path
 }
