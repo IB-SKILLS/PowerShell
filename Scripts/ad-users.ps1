@@ -19,7 +19,7 @@ $main_path = "OU=$ou_main,DC=$dc_first,DC=$dc_second"
 $users_path = "OU=$ou_users,OU=$ou_main,DC=$dc_first,DC=$dc_second"
 $computers_path = "OU=$ou_computers,OU=$ou_main,DC=$dc_first,DC=$dc_second"
 
-# Проверка
+# Проверка OU
 try
 {
 $err="false"
