@@ -22,17 +22,12 @@ $computers_path = "OU=$ou_computers,OU=$ou_main,DC=$dc_first,DC=$dc_second"
 # Проверка OU
 try
 {
-$err="false"
-Get-ADOrganizationalUnit -SearchBase "$main_path" -Filter *
-Get-ADOrganizationalUnit -SearchBase "$users_path" -Filter *
-Get-ADOrganizationalUnit -SearchBase "$computers_path" -Filter *
+Get-ADOrganizationalUnit -SearchBase "$main_path" -Filter * >$null
+Get-ADOrganizationalUnit -SearchBase "$users_path" -Filter * >$null
+Get-ADOrganizationalUnit -SearchBase "$computers_path" -Filter * >$null
 }
 catch
 {
-$err="true"
-}
-if ($err -ne "false"){
-#Создаем OU
 New-ADOrganizationalUnit -Name "$ou_main" -Path $dc_path
 New-ADOrganizationalUnit -Name "$ou_users" -Path $main_path
 New-ADOrganizationalUnit -Name "$ou_computers" -Path $main_path
