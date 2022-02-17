@@ -15,14 +15,14 @@ $credential = New-Object System.Management.Automation.PSCredential -ArgumentList
 Add-Computer -DomainName demo.lab -NewName $Username -OUPath $ldap_path -Credential $credential
 
 # Проверка
-try
-{
-Get-ADOrganizationalUnit -SearchBase "$main_path" -Filter * >$null
-}
+#try
+#{
+#Get-ADOrganizationalUnit -SearchBase "$main_path" -Filter * >$null
+#}
 # Создание
-catch
-{
-New-ADOrganizationalUnit -Name "$ou_main" -Path $dc_path
-}
+#catch
+#{
+#New-ADOrganizationalUnit -Name "$ou_main" -Path $dc_path
+#}
 
 Restart-Computer -Force
