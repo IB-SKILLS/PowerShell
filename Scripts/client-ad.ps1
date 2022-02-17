@@ -13,7 +13,6 @@ $credential = New-Object System.Management.Automation.PSCredential -ArgumentList
 
 # Добавляем пользователя в домен и перезагружаем комьютер
 Add-Computer -DomainName demo.lab -NewName $Username -OUPath $ldap_path -Credential $credential
-Restart-Computer -Force
 
 # Проверка
 try
@@ -25,3 +24,5 @@ catch
 {
 New-ADOrganizationalUnit -Name "$ou_main" -Path $dc_path
 }
+
+Restart-Computer -Force
