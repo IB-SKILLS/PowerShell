@@ -2,7 +2,7 @@ Import-Module ActiveDirectory
 
 # Указываем директорию
 $dir = "C:\out"
-new-item -path "$dir" -ItemType Directory -force
+new-item -path "$dir" -ItemType Directory -force >$null
 
 # Переменные DC
 $dc_first = "demo"
