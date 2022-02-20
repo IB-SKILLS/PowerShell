@@ -77,10 +77,6 @@ $credential = "New-Object System.Management.Automation.PSCredential -ArgumentLis
 
 $out = '$user = "' + "$user" + '"
 ' + '$pass = "' + "$pass" + '"
-' + '$ip = "' + "$ip" + '"
-' + '$mask = "' + "$mask" + '"
-' + '$gw = "' + "$gw" + '"
-' + '$dns = "' + "$dns" + '"
 ' + '$securepassword = ' + "$securepassword
 " + '$credential = ' + "$credential
 Get-NetAdapterBinding -InterfaceAlias $eth | Set-NetAdapterBinding -Enabled:$false -ComponentID ms_tcpip6
