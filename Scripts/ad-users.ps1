@@ -13,6 +13,13 @@ $ou_main = "DemoOffice"
 $ou_users = "Users"
 $ou_computers = "Computers"
 
+# Переменные для настройки сети
+$ip = '192.168.0.30'
+$mask = '255.255.255.0'
+$gw = '192.168.0.1'
+$dns = '192.168.0.100'
+$eth = 'Ethernet0'
+
 # Переменные PATH
 $dc_path = "DC=$dc_first,DC=$dc_second"
 $main_path = "OU=$ou_main,DC=$dc_first,DC=$dc_second"
@@ -70,8 +77,16 @@ $credential = "New-Object System.Management.Automation.PSCredential -ArgumentLis
 
 $out = '$user = "' + "$user" + '"
 ' + '$pass = "' + "$pass" + '"
+' + '$ip = "' + "$ip" + '"
+' + '$mask = "' + "$mask" + '"
+' + '$gw = "' + "$gw" + '"
+' + '$dns = "' + "$dns" + '"
 ' + '$securepassword = ' + "$securepassword
 " + '$credential = ' + "$credential
+Get-NetAdapterBinding -InterfaceAlias $eth | Set-NetAdapterBinding -Enabled:$false -ComponentID ms_tcpip6
+netsh interface ip set address name=$eth static $ip $mask $gw
+netsh interface ip set dns $eth static $dns
+Timeout /T 5
 Add-Computer -DomainName $dc_first.$dc_second -NewName $user -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential
 Restart-Computer -Force'
 
