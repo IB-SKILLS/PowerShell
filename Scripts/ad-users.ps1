@@ -14,8 +14,7 @@ $ou_users = "Users"
 $ou_computers = "Computers"
 
 # Переменные для настройки сети
-$ip = '192.168.0.30'
-$mask = '255.255.255.0'
+$mask = "255.255.255.0"
 $gw = '192.168.0.1'
 $dns = '192.168.0.100'
 $eth = 'Ethernet0'
@@ -43,22 +42,29 @@ New-ADOrganizationalUnit -Name "$ou_computers" -Path $main_path
 # Вводим переменные
 $number = Read-Host "Введите количество пользователей"
 $count=1..$number
-$users = @{}
+$users = @()
 
-foreach ($i in $count)
-{
-$username = Read-Host "Введите имя пользователя номер $i"
-$usergroup = Read-Host "Должен ли пользователь $i иметь права администратора? (Y - да, N - нет)"
-$users.Add($username,$usergroup)
-}
+    Foreach ($i in $count)
+    {
+    $Row = "" | Select Username,Admin,IP
+    $Row.Username = Read-Host "Введите имя пользователя номер $i"
+    $Row.Admin = Read-Host "Должен ли пользователь $i иметь права администратора? (Y - да, N - нет)"
+    if ($Row.Admin -eq "y")
+        {$Row.Admin = "Yes"}
+    else {$Row.Admin = "No"}
+    $Row.IP = Read-Host "Введите IP адрес для пользователя номер $i"
+    $Users += $Row
+   }
 $pass = Read-Host 'Enter the password'
 
 # Цикл с пользователями
-foreach ($user in $users.keys) {
+foreach ($user in $users) {
+$name = $user.Username
+$ip = $user.ip
 $Username = @{
-Name = "$user"
-GivenName = "$user"
-UserPrincipalName = "$user@demo.lab"
+Name = "$name"
+GivenName = "$name"
+UserPrincipalName = "$name@$dc_first.$dc_second"
 Path = $users_path
 ChangePasswordAtLogon = $true
 AccountPassword = "$pass" | ConvertTo-SecureString -AsPlainText -Force
@@ -67,25 +73,29 @@ Enabled = $true
 
 # Создание пользователей
 New-ADUser @Username
-Set-ADUser $user -PasswordNeverExpires:$True
-if ($users.$user -eq "y")
-{Add-ADGroupMember "Domain admins" $user}
+Set-ADUser $name -PasswordNeverExpires:$True
+if ($user.Admin -eq "Yes")
+{Add-ADGroupMember "Domain admins" $name}
 
 # Создание скрпитов для компьютеров "локально"
 $securepassword = '$pass' + " | ConvertTo-SecureString -AsPlainText -Force"
-$credential = "New-Object System.Management.Automation.PSCredential -ArgumentList" + ' $user, $securepassword'
+$credential = "New-Object System.Management.Automation.PSCredential -ArgumentList" + ' $name, $securepassword'
 
-$out = '$user = "' + "$user" + '"
+
+$out = '# Разрешаем использование испольняемого файла для всех пользователей
+# Set-ExecutionPolicy RemoteSigned
+# -A
+$name = "' + "$name" + '"
 ' + '$pass = "' + "$pass" + '"
 ' + '$securepassword = ' + "$securepassword
 " + '$credential = ' + "$credential
 Disable-NetAdapterBinding -Name '*' -ComponentID ms_tcpip6
 netsh interface ip set address name=$eth static $ip $mask $gw
 netsh interface ip set dns $eth static $dns
-Timeout /T 5
-Add-Computer -DomainName $dc_first.$dc_second -NewName $user -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential
+Timeout /T 10
+Add-Computer -DomainName $dc_first.$dc_second -NewName $name -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential
 Restart-Computer -Force'
 
 # Указываем директорию и записываем данные пользователя
-write-output $out | out-file -append -encoding utf8 "$dir\$user.ps1"
+write-output $out | out-file -append -encoding utf8 "$dir\$name.ps1"
 }
