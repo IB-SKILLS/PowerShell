@@ -44,17 +44,17 @@ $number = Read-Host "Введите количество пользовател�
 $count=1..$number
 $users = @()
 
-    Foreach ($i in $count)
-    {
-    $Row = "" | Select Username,Admin,IP
-    $Row.Username = Read-Host "Введите имя пользователя номер $i"
-    $Row.Admin = Read-Host "Должен ли пользователь $i иметь права администратора? (Y - да, N - нет)"
-    if ($Row.Admin -eq "y")
-        {$Row.Admin = "Yes"}
-    else {$Row.Admin = "No"}
-    $Row.IP = Read-Host "Введите IP адрес для пользователя номер $i"
-    $Users += $Row
-   }
+Foreach ($i in $count)
+{
+$Row = "" | Select Username,Admin,IP
+$Row.Username = Read-Host "Введите имя пользователя номер $i"
+$Row.Admin = Read-Host "Должен ли пользователь $i иметь права администратора? (Y - да, N - нет)"
+if ($Row.Admin -eq "y")
+{$Row.Admin = "Yes"}
+else {$Row.Admin = "No"}
+$Row.IP = Read-Host "Введите IP адрес для пользователя номер $i"
+$Users += $Row
+}
 $pass = Read-Host 'Enter the password'
 
 # Цикл с пользователями
@@ -80,7 +80,6 @@ if ($user.Admin -eq "Yes")
 # Создание скрпитов для компьютеров "локально"
 $securepassword = '$pass' + " | ConvertTo-SecureString -AsPlainText -Force"
 $credential = "New-Object System.Management.Automation.PSCredential -ArgumentList" + ' $name, $securepassword'
-
 
 $out = '# Разрешаем использование испольняемого файла для всех пользователей
 # Set-ExecutionPolicy RemoteSigned
