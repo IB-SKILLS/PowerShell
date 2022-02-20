@@ -79,7 +79,7 @@ $out = '$user = "' + "$user" + '"
 ' + '$pass = "' + "$pass" + '"
 ' + '$securepassword = ' + "$securepassword
 " + '$credential = ' + "$credential
-Get-NetAdapterBinding -InterfaceAlias $eth | Set-NetAdapterBinding -Enabled:$false -ComponentID ms_tcpip6
+Disable-NetAdapterBinding -Name '*' -ComponentID ms_tcpip6
 netsh interface ip set address name=$eth static $ip $mask $gw
 netsh interface ip set dns $eth static $dns
 Timeout /T 5
