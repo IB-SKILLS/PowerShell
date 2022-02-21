@@ -42,8 +42,7 @@ New-ADOrganizationalUnit -Name "$ou_computers" -Path $main_path
 }
 
 # Вводим переменные
-$number = Read-Host "Введите количество пользователей"
-$count=1..$number
+$count=1..$args[0]
 $users = @()
 
 Foreach ($i in $count)
