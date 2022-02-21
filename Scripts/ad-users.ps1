@@ -93,7 +93,7 @@ $name = "' + "$name" + '"
 Disable-NetAdapterBinding -Name '*' -ComponentID ms_tcpip6
 netsh interface ip set address name=$eth static $ip $mask $gw
 netsh interface ip set dns $eth static $dns " + '>$null' + "
-Timeout /T 10
+Timeout /T 5
 Add-Computer -DomainName $dc_first.$dc_second -NewName $pc -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential
 Restart-Computer -Force'
 
