@@ -15,8 +15,8 @@ $ou_computers = "Computers"
 
 # Переменные для настройки сети
 $mask = "255.255.255.0"
-$gw = '192.168.0.1'
-$dns = '192.168.0.100'
+$gw = '192.168.10.1'
+$dns = '192.168.10.100'
 $eth = 'Ethernet0'
 
 # Переменные PATH
@@ -46,12 +46,13 @@ $users = @()
 
 Foreach ($i in $count)
 {
-$Row = "" | Select Username,Admin,IP
+$Row = "" | Select Username,Admin,IP,PC
 $Row.Username = Read-Host "Введите имя пользователя номер $i"
 $Row.Admin = Read-Host "Должен ли пользователь $i иметь права администратора? (Y - да, N - нет)"
 if ($Row.Admin -eq "y")
 {$Row.Admin = "Yes"}
 else {$Row.Admin = "No"}
+$Row.PC = Read-Host "Введите имя компьютера номер $i"
 $Row.IP = Read-Host "Введите IP адрес для пользователя номер $i"
 $Users += $Row
 }
@@ -61,6 +62,7 @@ $pass = Read-Host 'Enter the password'
 foreach ($user in $users) {
 $name = $user.Username
 $ip = $user.ip
+$pc = $user.pc
 $Username = @{
 Name = "$name"
 GivenName = "$name"
@@ -92,9 +94,9 @@ Disable-NetAdapterBinding -Name '*' -ComponentID ms_tcpip6
 netsh interface ip set address name=$eth static $ip $mask $gw
 netsh interface ip set dns $eth static $dns
 Timeout /T 10
-Add-Computer -DomainName $dc_first.$dc_second -NewName $name -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential
+Add-Computer -DomainName $dc_first.$dc_second -NewName $pc -OUPath " + '"' + "$computers_path" + '"' + " -Credential" + ' $credential
 Restart-Computer -Force'
 
 # Указываем директорию и записываем данные пользователя
-write-output $out | out-file -append -encoding utf8 "$dir\$name.ps1"
+write-output $out | out-file -append -encoding utf8 "$dir\$pc.ps1"
 }
