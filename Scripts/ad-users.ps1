@@ -1,3 +1,5 @@
+# Разрешаем запуск скриптов
+# Set-ExecutionPolicy Unrestricted -force
 Import-Module ActiveDirectory
 
 # Указываем директорию
