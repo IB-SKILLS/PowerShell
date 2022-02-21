@@ -42,7 +42,7 @@ New-ADOrganizationalUnit -Name "$ou_computers" -Path $main_path
 }
 
 # Вводим переменные
-$count=1..$args
+$count=1..$args[0]
 $users = @()
 
 Foreach ($i in $count)
